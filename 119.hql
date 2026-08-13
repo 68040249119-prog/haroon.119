@@ -137,3 +137,31 @@ order by 3 desc
 --ข้อมูล ชื่อบริษัทลูกค้า และประเทศลูกค้า ที่ซื้อสินค้าที่มาจ่ากบริษัท Exotic Liquids
 
 --ชื่อบริษัทลูกค้าที่ซื้อสินค้าหมวดหมู่หมวดหมู่ Seafood
+
+--Sub Query (Query ซ้อนกัน)
+--ชื่อพนักงานทีมีตำแหน่งเดียวกับ Nancy (nancy ตำแหน่งอะไร)
+select Firstname
+from Employees
+where title = (select title from Employees where FirstName = 'nancy') --nancy ตำแหน่งอะไร
+
+--ชื่อพนักงานที่อายุน้อยกว่า Robert (Robert อายุเท่าไหร่)
+select Firstname
+from Employees
+where BirthDate > (select birthdate from Employees where FirstName = 'Robert') --วันเกิดของRobert
+
+
+
+--รหัสสินค้า ชื่อสินค้า ที่มีราคาสูงกว่าค่าเฉลี่ยทั้งหมดของราคาสินค้า (ค่าเฉลียราคาสินค้าคืออะไร)
+select ProductID , ProductName , Uniprice
+from products
+where unitprice >(select Avg(unitprice) from products) --ราคาเฉลี่ยของสินค้าทั้งหมด
+
+--ชื่อ นามสกุล พนักงานที่ อายุมากที่สุด
+select firstname, lastname, birthdate
+from employees
+where birthdate = (select min(birthdate) from employees)
+
+--ชื่อ นามสกุล พนักงานที่ เข้าทำงานหลังสุด 
+select firstname, lastname, hiredate
+from employees
+where hiredate = (select max(hiredate) from employees)
